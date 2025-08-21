@@ -1,0 +1,267 @@
+{
+  "name": "Migração de dados",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        0
+      ],
+      "id": "81a209d8-ee80-4676-a809-1517c115370e",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1OjisMsyH_xSJPmFq43mbC-_IX-w02VjAiUkea6-ovcw/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1OjisMsyH_xSJPmFq43mbC-_IX-w02VjAiUkea6-ovcw/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        -160
+      ],
+      "id": "03ca851d-7626-4836-a0cb-8597ec71ff56",
+      "name": "pega linhas RH",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "48bU2XEN2UOwsw2U",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1KeEF47VXCXO-eZpxhFG8Ye3gNRG3qwUSjES2kZ-_Xeo/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1KeEF47VXCXO-eZpxhFG8Ye3gNRG3qwUSjES2kZ-_Xeo/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        0
+      ],
+      "id": "5571721e-fd55-4109-b4ec-7859dcb05118",
+      "name": "pega linhas IA1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "48bU2XEN2UOwsw2U",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"area\": \"IA\",\n  \"data\": \"{{ $json['Data/Anual'] }}\",\n  \"evento\": \"{{ $json.Evento }}\",\n  \"descricao\": \"{{ $json['Descrição'] }}\",\n  \"status\": \"{{ $json.STATUS }}\",\n  \"engajamento\": \"{{ $json.Engajamento }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        352,
+        0
+      ],
+      "id": "3b2c0c76-72de-486f-9419-2a7bcff4bb11",
+      "name": "Set IA"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"area\": \"RH\",\n  \"data\": \"{{ $json['Data/Anual']}}\",\n  \"evento\": \"{{ $json.Evento }}\",\n  \"descricao\": \"{{ $json['Descrição'] }}\",\n  \"status\": \"{{ $json.STATUS }}\",\n  \"engajamento\": \"{{ parseInt($json.ALCANCE) }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        352,
+        -160
+      ],
+      "id": "2cf19e78-fb7b-44a2-9a53-8fcc2cf498d5",
+      "name": "Set RH"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1UNROt8uGtCsr1TIsSJ8hC1ZVDQ_4_pXnVzg4mlLPasA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1UNROt8uGtCsr1TIsSJ8hC1ZVDQ_4_pXnVzg4mlLPasA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        176
+      ],
+      "id": "da73adc7-1435-4142-84fa-3a01d59bfd2d",
+      "name": "pega linhas Marketing",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "48bU2XEN2UOwsw2U",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"area\": \"{{ \"Marketing\" }}\",\n  \"data\": \"{{ $json['Data/Anual'] }}\",\n  \"evento\": \"{{ $json.Evento.replace(/\"/g, '') }}\",\n  \"descricao\": \"{{ $json['Descrição'] }}\",\n  \"status\": \"{{ $json.STATUS }}\",\n  \"engajamento\": \"{{ 0 }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        352,
+        176
+      ],
+      "id": "0d3eb093-05c6-48ba-b543-5010417cc63a",
+      "name": "Set Marketing"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/eventos/",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"area\": \"{{ $json.area }}\",\n  \"data\": \"{{ $json.data }}\",\n  \"evento\": \"{{ $json.evento }}\",\n  \"descricao\": \"{{ $json.descricao }}\",\n  \"status\": \"{{ $json.status }}\",\n  \"engajamento\": \"{{ $json.engajamento }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        0
+      ],
+      "id": "d66d3ff5-cf27-4ce9-a698-5727b1754f07",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "pega linhas RH",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "pega linhas Marketing",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "pega linhas IA1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pega linhas IA1": {
+      "main": [
+        [
+          {
+            "node": "Set IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pega linhas RH": {
+      "main": [
+        [
+          {
+            "node": "Set RH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pega linhas Marketing": {
+      "main": [
+        [
+          {
+            "node": "Set Marketing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set RH": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set IA": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Marketing": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3505bdbe-9de9-4603-9444-899941c044a7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1c7aa468e615de2662720d007ac9ae8c504274496fab965623bd04cf7aaf07c2"
+  },
+  "id": "EgA0TKzm0yI8KDxC",
+  "tags": []
+}
