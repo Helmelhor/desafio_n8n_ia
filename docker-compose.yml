@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: agendadb
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api:
+    container_name: fastapi_api
+    restart: always
+    build: ./api  # Constrói a imagem a partir do Dockerfile na pasta ./api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "postgresql://admin:password123@db:5432/agendadb"
+    depends_on:
+      - db # Garante que o banco de dados inicie antes da API
+
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n_automations
+    restart: always
+    ports:
+      - "5678:5678"
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+    environment:
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+    depends_on:
+      - api # Garante que a API inicie antes do n8n
+
+volumes:
+  postgres_data:
+  n8n_data:
