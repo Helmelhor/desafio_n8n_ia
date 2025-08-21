@@ -1,12 +1,14 @@
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String
 from database import Base
 
+#determinando tabela
 class Evento(Base):
     __tablename__ = "eventos"
 
     id = Column(Integer, primary_key=True, index=True)
-    area = Column(String, index=True) # RH, Marketing ou IA
+    area = Column(String, index=True)
+    data = Column(String)
     evento = Column(String)
-    data_inicio = Column(Date)
-    data_fim = Column(Date)
-    responsavel = Column(String)
+    descricao = Column(String)
+    status = Column(String)
+    engajamento = Column(Integer)

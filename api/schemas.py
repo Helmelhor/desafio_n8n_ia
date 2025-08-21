@@ -1,13 +1,13 @@
 from pydantic import BaseModel
-from datetime import date
-from typing import Optional
 
 class EventoBase(BaseModel):
-    area: str
+    #campos
+    area: str 
+    data: str
     evento: str
-    data_inicio: date
-    data_fim: date
-    responsavel: str
+    descricao: str
+    status: str
+    engajamento: int
 
 class EventoCreate(EventoBase):
     pass
