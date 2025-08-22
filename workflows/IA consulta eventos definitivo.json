@@ -1,0 +1,241 @@
+{
+  "name": "IA consulta eventos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3abb36e0-3571-490f-8208-46b31b5c976b",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -512,
+        -16
+      ],
+      "id": "eba43900-5fc5-4555-b023-1ed7343d19bc",
+      "name": "Webhook",
+      "webhookId": "3abb36e0-3571-490f-8208-46b31b5c976b"
+    },
+    {
+      "parameters": {
+        "toolDescription": "esta ferramenta serve para obter uma lista completa de todos os eventos agendados. A ferramenta retorna todos os dados disponíveis sobre cada evento, incluindo sua área (Marketing, RH, IA), datas, descrição e status.",
+        "url": "http://api:8000/eventos/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        176
+      ],
+      "id": "f7a02b0c-6807-4615-a06e-df72f19ebdeb",
+      "name": "HTTP Request",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "390802f7-a673-455f-bd40-7d1fdf2c6961",
+              "name": "resposta",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        -16
+      ],
+      "id": "a7520244-754b-4935-9053-a4799e6f1413",
+      "name": "formata a resposta"
+    },
+    {
+      "parameters": {
+        "content": "pensei em colocar minha pergunta e a resposta do modelo dentro de uma variável em um node (code) com java script para salvar na memoria como histórico de chat, mas ainda não funcionou.",
+        "height": 208,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        -416
+      ],
+      "id": "4ec5c1dc-2b83-4ea4-9c94-15d4cb584aa4",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook').item.json.body.pergunta }}",
+        "options": {
+          "systemMessage": "Você é o \"Doutor Agendas\", um assistente de IA profissional, amigável e especialista nas agendas da Facilit. Sua missão é fornecer respostas claras e completas com base nos dados disponíveis e na sua capacidade de interpretação.\n\n**Siga estas regras estritamente:**\n1.  **Responda a Saudações**: Se a pergunta do usuário for uma saudação (como \"oi\", \"olá\", \"tudo bem?\"), responda de forma amigável, se apresente e pergunte como pode ajudar. Exemplo de resposta: \"Olá! Tudo bem por aqui. Eu sou o Doutor Agendas, o assistente de IA da Facilit Tecnologia. Como posso ajudar com as agendas hoje?\".\n2.  **Formate sua resposta**: Sempre que listar eventos, use uma lista com marcadores (bullet points). Para cada evento, inclua o nome, o período e a descrição.\n3.  **Seja proativo**: Se um evento estiver \"Em andamento\", destaque isso na sua resposta.\n4.  **Lide com a falta de informação**: Se você não encontrar nenhum evento que corresponda à pergunta do usuário, responda educadamente: \"Não encontrei eventos que correspondam à sua pesquisa. Posso ajudar com mais alguma coisa?\".\n5.  **Seja conciso**: Forneça apenas a informação solicitada, sem adicionar opiniões ou informações extras.\n6.  **Exemplo de resposta ideal**:\n    *Usuário: \"Quais são os eventos de RH?\"*\n    *Sua resposta: \"Claro! Os eventos agendados para a área de RH são:\n    * **Análise de Desempenho (Trimestral)**\n        * **Período:** 01/01/2025 à 31/03/2025\n        * **Descrição:** Reunião para avaliar as métricas do primeiro trimestre.\"\n7.  **Mantenha o Foco (Guardrail Refinado)**: Sua função principal é responder sobre os eventos das agendas da Facilit. Você pode responder a perguntas de acompanhamento e fazer cálculos simples **SE E SOMENTE SE** eles forem diretamente relacionados aos dados da agenda que acabaram de ser discutidos na conversa. Se o usuário perguntar sobre um tópico completamente não relacionado (história, ciência, outras empresas, etc.), recuse educadamente com a seguinte frase: \"Desculpe, minha especialidade é exclusivamente sobre as agendas dos setores da Facilit e informações relacionadas. Não tenho conhecimento sobre outros assuntos.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -144,
+        -16
+      ],
+      "id": "7efff467-6bac-42d0-b6c9-7895dbf46c2c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "gpt-3.5-turbo"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -224,
+        176
+      ],
+      "id": "4c72cc8a-fc74-4dda-85f9-d36fd2ff5641",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "6F2XRoqLarcxTRL9",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "123456"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        176
+      ],
+      "id": "8c143b7e-f79b-4acc-9f0c-d9cc7b0c303b",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "oAYR5DLYaYZgs8Li",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a8d2e56-2d39-4d29-8612-7895bbd07da0",
+              "name": "session_id",
+              "value": "123456",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -336,
+        -16
+      ],
+      "id": "63e8394f-54a3-4c09-b21e-942880535e9b",
+      "name": "Setando id banco memoria"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Setando id banco memoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "formata a resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setando id banco memoria": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "862734ff-157b-41b9-8f2f-7e799b1e9abd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1c7aa468e615de2662720d007ac9ae8c504274496fab965623bd04cf7aaf07c2"
+  },
+  "id": "4ZTqPxKEbbdq7GUf",
+  "tags": []
+}
