@@ -27,8 +27,8 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        80,
-        176
+        96,
+        192
       ],
       "id": "f7a02b0c-6807-4615-a06e-df72f19ebdeb",
       "name": "HTTP Request",
@@ -56,21 +56,6 @@
       ],
       "id": "a7520244-754b-4935-9053-a4799e6f1413",
       "name": "formata a resposta"
-    },
-    {
-      "parameters": {
-        "content": "pensei em colocar minha pergunta e a resposta do modelo dentro de uma variável em um node (code) com java script para salvar na memoria como histórico de chat, mas ainda não funcionou.",
-        "height": 208,
-        "width": 320
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        -304,
-        -416
-      ],
-      "id": "4ec5c1dc-2b83-4ea4-9c94-15d4cb584aa4",
-      "name": "Sticky Note"
     },
     {
       "parameters": {
@@ -103,7 +88,7 @@
       "typeVersion": 1.2,
       "position": [
         -224,
-        176
+        192
       ],
       "id": "4c72cc8a-fc74-4dda-85f9-d36fd2ff5641",
       "name": "OpenAI Chat Model",
@@ -122,8 +107,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -80,
-        176
+        -64,
+        192
       ],
       "id": "8c143b7e-f79b-4acc-9f0c-d9cc7b0c303b",
       "name": "Postgres Chat Memory",
@@ -151,7 +136,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -336,
+        -320,
         -16
       ],
       "id": "63e8394f-54a3-4c09-b21e-942880535e9b",
