@@ -13,17 +13,25 @@ services:
       - ./postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d agendadb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     container_name: fastapi_api
     restart: always
-    build: ./api  # Constrói a imagem a partir do Dockerfile na pasta ./api
+    build: ./api
     ports:
       - "8000:8000"
     environment:
       DATABASE_URL: "postgresql://admin:password123@db:5432/agendadb"
     depends_on:
-      - db # Garante que o banco de dados inicie antes da API
+      db:
+        condition: service_healthy
+    volumes:
+      - ./api:/app
 
   n8n:
     image: n8nio/n8n
@@ -36,17 +44,20 @@ services:
     environment:
       - GENERIC_TIMEZONE=America/Sao_Paulo
     depends_on:
-      - api # Garante que a API inicie antes do n8n
+      api:
+        condition: service_started
+      db:
+        condition: service_healthy
 
   chatbot_ui:
-      container_name: streamlit_chatbot
-      restart: always
-      build: ./streamlit_app
-      ports:
-        - "8501:8501"
-      depends_on:
-        - n8n
-  volumes:
+    container_name: streamlit_chatbot
+    restart: always
+    build: ./streamlit_app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - n8n
+    volumes:
       - ./streamlit_app:/app
 
 volumes:
