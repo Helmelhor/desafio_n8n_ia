@@ -38,6 +38,17 @@ services:
     depends_on:
       - api # Garante que a API inicie antes do n8n
 
+  chatbot_ui:
+      container_name: streamlit_chatbot
+      restart: always
+      build: ./streamlit_app
+      ports:
+        - "8501:8501"
+      depends_on:
+        - n8n
+  volumes:
+      - ./streamlit_app:/app
+
 volumes:
   postgres_data:
   n8n_data:

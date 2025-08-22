@@ -1,4 +1,3 @@
-# /api/Dockerfile
 FROM python:3.9-slim
 
 # Instala o cliente do postgres para o script de espera
