@@ -18,6 +18,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+      start_period: 30s
 
   api:
     container_name: fastapi_api
@@ -30,8 +31,8 @@ services:
     depends_on:
       db:
         condition: service_healthy # Garante que a API só inicie após o DB estar saudável
-    volumes:
-      - ./api:/app
+  # volumes:
+  #   - ./api:/app
 
   n8n:
     image: n8nio/n8n

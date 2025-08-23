@@ -10,9 +10,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Copia o script para dentro da imagem
-COPY wait-for-db.sh .
-RUN chmod +x wait-for-db.sh
-
-# Executa o script de espera antes de iniciar a API
-CMD ["./wait-for-db.sh", "db", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Inicia a API diretamente (o docker-compose já gerencia a dependência do DB)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
