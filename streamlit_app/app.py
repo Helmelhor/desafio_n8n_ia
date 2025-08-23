@@ -8,7 +8,7 @@ st.title("🤖 Doutor Agendas - Facilit Tecnologia")
 st.caption("Seu assistente de IA para consulta de agendas da Facilit.")
 
 
-N8N_WEBHOOK_URL = "http://localhost:5678/webhook/3abb36e0-3571-490f-8208-46b31b5c976b"
+N8N_WEBHOOK_URL = "http://n8n_automations:5678/webhook/3abb36e0-3571-490f-8208-46b31b5c976b"
 
 
 if "messages" not in st.session_state:

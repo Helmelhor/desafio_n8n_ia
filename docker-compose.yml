@@ -59,8 +59,8 @@ services:
     depends_on:
       n8n:
         condition: service_started
-    volumes:
-      - ./streamlit_app:/app
+    # volumes:
+    #   - ./streamlit_app:/app
 
 volumes:
   postgres_data:
