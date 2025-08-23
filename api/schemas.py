@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 class EventoBase(BaseModel):
@@ -17,3 +18,11 @@ class Evento(EventoBase):
 
     class Config:
         from_attributes = True
+
+class EventoUpdate(BaseModel):
+    area: Optional[str] = None
+    data: Optional[str] = None
+    evento: Optional[str] = None
+    descricao: Optional[str] = None
+    status: Optional[str] = None
+    engajamento: Optional[int] = None

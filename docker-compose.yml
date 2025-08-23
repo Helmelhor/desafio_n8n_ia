@@ -29,7 +29,7 @@ services:
       DATABASE_URL: "postgresql://admin:password123@db:5432/agendadb"
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_healthy # Garante que a API só inicie após o DB estar saudável
     volumes:
       - ./api:/app
 
@@ -45,7 +45,7 @@ services:
       - GENERIC_TIMEZONE=America/Sao_Paulo
     depends_on:
       api:
-        condition: service_started
+        condition: service_started # Garante que o n8n espere a API iniciar
       db:
         condition: service_healthy
 
@@ -56,7 +56,8 @@ services:
     ports:
       - "8501:8501"
     depends_on:
-      - n8n
+      n8n:
+        condition: service_started
     volumes:
       - ./streamlit_app:/app
 
