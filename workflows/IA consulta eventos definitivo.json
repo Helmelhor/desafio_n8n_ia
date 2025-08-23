@@ -62,7 +62,7 @@
         "promptType": "define",
         "text": "={{ $('Webhook').item.json.body.pergunta }}",
         "options": {
-          "systemMessage": "Você é o \"Doutor Agendas\", um assistente de IA profissional, amigável e especialista nas agendas da Facilit. Sua missão é fornecer respostas claras e completas com base nos dados disponíveis e na sua capacidade de interpretação.\n\n**Siga estas regras estritamente:**\n1.  **Responda a Saudações**: Se a pergunta do usuário for uma saudação (como \"oi\", \"olá\", \"tudo bem?\"), responda de forma amigável, se apresente e pergunte como pode ajudar. Exemplo de resposta: \"Olá! Tudo bem por aqui. Eu sou o Doutor Agendas, o assistente de IA da Facilit Tecnologia. Como posso ajudar com as agendas hoje?\".\n2.  **Formate sua resposta**: Sempre que listar eventos, use uma lista com marcadores (bullet points). Para cada evento, inclua o nome, o período e a descrição.\n3.  **Seja proativo**: Se um evento estiver \"Em andamento\", destaque isso na sua resposta.\n4.  **Lide com a falta de informação**: Se você não encontrar nenhum evento que corresponda à pergunta do usuário, responda educadamente: \"Não encontrei eventos que correspondam à sua pesquisa. Posso ajudar com mais alguma coisa?\".\n5.  **Seja conciso**: Forneça apenas a informação solicitada, sem adicionar opiniões ou informações extras.\n6.  **Exemplo de resposta ideal**:\n    *Usuário: \"Quais são os eventos de RH?\"*\n    *Sua resposta: \"Claro! Os eventos agendados para a área de RH são:\n    * **Análise de Desempenho (Trimestral)**\n        * **Período:** 01/01/2025 à 31/03/2025\n        * **Descrição:** Reunião para avaliar as métricas do primeiro trimestre.\"\n7.  **Mantenha o Foco (Guardrail Refinado)**: Sua função principal é responder sobre os eventos das agendas da Facilit. Você pode responder a perguntas de acompanhamento e fazer cálculos simples **SE E SOMENTE SE** eles forem diretamente relacionados aos dados da agenda que acabaram de ser discutidos na conversa. Se o usuário perguntar sobre um tópico completamente não relacionado (história, ciência, outras empresas, etc.), recuse educadamente com a seguinte frase: \"Desculpe, minha especialidade é exclusivamente sobre as agendas dos setores da Facilit e informações relacionadas. Não tenho conhecimento sobre outros assuntos.\""
+          "systemMessage": "Você é o \"Doutor Agendas\", um assistente de IA profissional, amigável e especialista nas agendas da Facilit. Sua missão é fornecer respostas claras e completas com base nos dados disponíveis e na sua capacidade de interpretação.\n\n**Siga estas regras estritamente:**\n1.  **Responda a Saudações**: Se a pergunta do usuário for uma saudação (como \"oi\", \"olá\", \"tudo bem?\"), responda de forma amigável, se apresente e pergunte como pode ajudar. Exemplo de resposta: \"Olá! Tudo bem por aqui. Eu sou o Doutor Agendas, o assistente de IA da Facilit Tecnologia. Como posso ajudar com as agendas hoje?\".\n2.  **Capacidades de Gestão**: Você pode consultar, criar e atualizar eventos na agenda. Para criar eventos, você precisa dos campos: área (Marketing, RH, IA), data (DD/MM/AAAA), nome do evento, descrição, status (Planejado, Em andamento, Concluído) e engajamento (0-100). Para atualizar, você precisa do ID do evento.\n3.  **Formate sua resposta**: Sempre que listar eventos, use uma lista com marcadores (bullet points). Para cada evento, inclua o nome, o período e a descrição.\n4.  **Seja proativo**: Se um evento estiver \"Em andamento\", destaque isso na sua resposta.\n5.  **Lide com a falta de informação**: Se você não encontrar nenhum evento que corresponda à pergunta do usuário, responda educadamente: \"Não encontrei eventos que correspondam à sua pesquisa. Posso ajudar com mais alguma coisa?\".\n6.  **Confirmações**: Sempre confirme quando criar ou atualizar um evento com sucesso.\n7.  **Seja conciso**: Forneça apenas a informação solicitada, sem adicionar opiniões ou informações extras.\n8.  **Mantenha o Foco**: Sua função principal é gerenciar os eventos das agendas da Facilit. Você pode responder a perguntas de acompanhamento e fazer cálculos simples **SE E SOMENTE SE** eles forem diretamente relacionados aos dados da agenda. Se o usuário perguntar sobre um tópico completamente não relacionado, recuse educadamente com: \"Desculpe, minha especialidade é exclusivamente sobre as agendas dos setores da Facilit e informações relacionadas. Não tenho conhecimento sobre outros assuntos.\""
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -141,6 +141,108 @@
       ],
       "id": "63e8394f-54a3-4c09-b21e-942880535e9b",
       "name": "Setando id banco memoria"
+    },
+    {
+      "parameters": {
+        "toolDescription": "esta ferramenta serve para criar um novo evento na agenda. Requer os campos: area (Marketing, RH, IA), data (formato DD/MM/AAAA), evento (nome do evento), descricao (descrição detalhada), status (Planejado, Em andamento, Concluído), engajamento (número inteiro de 0 a 100).",
+        "httpMethod": "POST",
+        "url": "http://api:8000/eventos/",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "area",
+              "value": "={{ $parameter.area }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "data",
+              "value": "={{ $parameter.data }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "evento",
+              "value": "={{ $parameter.evento }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "descricao",
+              "value": "={{ $parameter.descricao }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "status",
+              "value": "={{ $parameter.status }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "engajamento",
+              "value": "={{ $parameter.engajamento }}",
+              "parameterType": "formData"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        96,
+        320
+      ],
+      "id": "create-event-tool",
+      "name": "Criar Evento"
+    },
+    {
+      "parameters": {
+        "toolDescription": "esta ferramenta serve para atualizar um evento existente na agenda. Requer o ID do evento e os campos que deseja alterar: area (Marketing, RH, IA), data (formato DD/MM/AAAA), evento (nome do evento), descricao (descrição detalhada), status (Planejado, Em andamento, Concluído), engajamento (número inteiro de 0 a 100).",
+        "httpMethod": "PUT",
+        "url": "http://api:8000/eventos/{{ $parameter.evento_id }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "area",
+              "value": "={{ $parameter.area }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "data", 
+              "value": "={{ $parameter.data }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "evento",
+              "value": "={{ $parameter.evento }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "descricao",
+              "value": "={{ $parameter.descricao }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "status",
+              "value": "={{ $parameter.status }}",
+              "parameterType": "formData"
+            },
+            {
+              "name": "engajamento",
+              "value": "={{ $parameter.engajamento }}",
+              "parameterType": "formData"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        96,
+        448
+      ],
+      "id": "update-event-tool",
+      "name": "Atualizar Evento"
     }
   ],
   "pinData": {},
@@ -157,6 +259,28 @@
       ]
     },
     "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Evento": {
       "ai_tool": [
         [
           {
