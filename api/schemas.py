@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel #garante que os dados recebidos e enviados pela API estejam no formato correto
 
 class EventoBase(BaseModel):
     #campos
@@ -19,6 +19,7 @@ class Evento(EventoBase):
     class Config:
         from_attributes = True
 
+#definindo esquema para atualização de eventos (tipos de dados)
 class EventoUpdate(BaseModel):
     area: Optional[str] = None
     data: Optional[str] = None
