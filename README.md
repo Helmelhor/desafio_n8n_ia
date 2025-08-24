@@ -5,6 +5,11 @@ Este projeto utiliza o N8N em um ambiente Docker para criar um agente de IA — 
 
 > Consulte o relatório final neste repositório para mais detalhes.
 
+> Tutorial em vídeo do deploy abaixo.
+
+[![Demonstração do projeto](https://img.youtube.com/vi/BHcIdomeLrY/0.jpg)](https://youtu.be/BHcIdomeLrY)
+
+
 ![Exemplo do Dr. Agendas em funcionamento](img\image.jpeg)
 
 ## Deploy local
