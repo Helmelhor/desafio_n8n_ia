@@ -10,7 +10,7 @@ Este projeto utiliza o N8N em um ambiente Docker para criar um agente de IA — 
 [![Demonstração do projeto](https://img.youtube.com/vi/BHcIdomeLrY/0.jpg)](https://youtu.be/BHcIdomeLrY)
 
 
-![Exemplo do Dr. Agendas em funcionamento](img\image.jpeg)
+![Exemplo do Dr. Agendas em funcionamento](img/image.jpeg)
 
 ## Deploy local
 
@@ -44,7 +44,7 @@ Se o container do banco aparecer como **unhealthy**, é porque o banco leva algu
 
 Todos os containers (db, api, n8n e chatbot_ui) devem estar em execução. Confira na interface do Docker Desktop:
 
-![Exemplo docker desktop](img\docker_desktop.jpeg)
+![Exemplo docker desktop](img/docker_desktop.jpeg)
 
 ## Importando os Workflows
 
