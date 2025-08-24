@@ -1,7 +1,7 @@
 
 # Agente de IA com N8N, Docker e Streamlit
 
-Este projeto utiliza o N8N em um ambiente Docker para criar um agente de IA — o **Dr. Agendas** — capaz de analisar e incluir dados de agendas dos setores da empresa **Facilit Tecnologia** em um banco de dados Postgres. O chatbot pode ser acessado por uma interface web desenvolvida com Streamlit.
+Este projeto utiliza o N8N em um ambiente Docker para criar um agente de IA — o **Dr. Agendas** — capaz de analisar e incluir dados de agendas dos setores da empresa **Facilit Tecnologia** em um banco de dados Postgres. O chatbot pode ser acessado por uma interface web desenvolvida com Streamlit (biblioteca python).
 
 > Consulte o relatório final neste repositório para mais detalhes.
 
@@ -54,5 +54,5 @@ Todos os containers (db, api, n8n e chatbot_ui) devem estar em execução. Confi
 
 ## Aplicação Streamlit
 
-Com os workflows ativos, acesse o chatbot web em (estará por padrão no endpoint 8501):  
+Com os workflows ativos localmente, acesse o chatbot web, em:  
 **http://localhost:8501/**
